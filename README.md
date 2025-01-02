@@ -1,6 +1,11 @@
 # Telecom Customer Churn SQL Project
 
+## Breakdown
+- [Project Overview](#project-overview)
+- [Process](#process)
+- [Recommendations](#recommendations)
 ## Project Overview
+---
 This project addresses customer churn using SQL to analyze telecom data. Customer churn, or customer attrition, is when customers or subscribers stop doing business with a company or cease using its products or services. Churn can occur for various reasons, including dissatisfaction with the product or service, competitive offerings, pricing issues, personal circumstances, or poor marketing and communication.
 
 In this project, SQL was utilized to analyze multi-year customer data to identify churn patterns and the factors influencing customer attrition. Advanced SQL techniques were employed to extract insights, calculate Customer Lifetime Value (CLV), and conduct an in-depth analysis using data exploration, cleaning, window, and aggregate functions. The goal was to provide actionable recommendations for enhancing customer retention and minimizing churn using SQL only.
@@ -61,3 +66,9 @@ The data was provided in CSV format and loaded into a MySQL database as a table 
 3. **Offer Benefits for Families**: Customers with dependents or partners tend to stay longer, so offering special benefits for families might further reduce churn in this segment.
 4. **Enhance Streaming Services**: Invest in enhancing or expanding streaming services, as customers who use these services show lower churn rates.
 5. **Offer Incentives to Singles**: Create retention programs specifically for single customers to reduce their higher churn rates.
+
+## Reference 
+- Kaggle for the dataset
+
+*P.S*: I wrote this code a while ago to show my SQL proficiency 😄, If you would like to recreate this project or have interesting questions you can reach out to me.
+
