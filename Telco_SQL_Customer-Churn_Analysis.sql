@@ -1,6 +1,7 @@
 -- Churn Data Analysis Using SQL --
 
-SELECT * FROM datasets.`telco-churn`; # A quick glans at the data 
+SELECT * FROM datasets.`telco-churn`
+LIMIT 10; # A quick glans at the data 
 
 -- Data Cleaning 
 # Total number of customers
