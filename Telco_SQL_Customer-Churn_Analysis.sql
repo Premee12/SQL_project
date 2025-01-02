@@ -1,30 +1,30 @@
 -- Churn Data Analysis Using SQL --
 
 SELECT * FROM datasets.`telco-churn`
-LIMIT 10; # A quick glans at the data 
+LIMIT 10; # SELECTing the first 10 rows to get an initial glance at the dataset 
 
 -- Data Cleaning 
 # Total number of customers
-select distinct count(customerID) as TotalCustomers from datasets.`telco-churn`;
+SELECT distinct count(customerID) as TotalCustomers from datasets.`telco-churn`;
 
 # Check for the duplicate values
-select customerID , count(customerID) as no_of_times from datasets.`telco-churn`
+SELECT customerID , count(customerID) as no_of_times from datasets.`telco-churn`
 group by customerID having count(customerID)>1;
 
-# check for null values
+# Checking for null values in specific columns
 SELECT
-    'SeniorCitizen' AS ColumnName,
-    SUM(CASE WHEN SeniorCitizen IS NULL THEN 1 ELSE 0 END) AS nullcount
+    'SeniorCitizen' AS Senior_Citizen_Null_Count_Column,
+    SUM(CASE WHEN SeniorCitizen IS NULL THEN 1 ELSE 0 END) AS Null_Count
 FROM datasets.`telco-churn`
 UNION
 SELECT
-    'tenure' AS ColumnName,
-    SUM(CASE WHEN tenure IS NULL THEN 1 ELSE 0 END) AS nullcount
+    'tenure' AS Tenure_Null_Count_Column,
+    SUM(CASE WHEN tenure IS NULL THEN 1 ELSE 0 END) AS Null_Count
 FROM datasets.`telco-churn`
 UNION
 SELECT
-    'TechSupport' AS ColumnName,
-    SUM(CASE WHEN TechSupport IS NULL THEN 1 ELSE 0 END) AS nullcount
+    'TechSupport' AS TechSupport_Null_Count_Column,
+    SUM(CASE WHEN TechSupport IS NULL THEN 1 ELSE 0 END) AS Null_Count
 FROM datasets.`telco-churn`;
 
 -- Data Exploration & Analysis
@@ -34,7 +34,7 @@ SELECT gender, COUNT(*) AS customer_count
 FROM datasets.`telco-churn`
 GROUP BY gender;
 
-# retention and churn distribution based on gender
+# Retention and churn distribution based on gender
 SELECT gender, Churn, 
 COUNT(*) AS count_by_gender,
 ceil((COUNT(*) / SUM(COUNT(*)) OVER(PARTITION BY Gender)) * 100) AS retention_churn_rate_by_gender
@@ -49,7 +49,7 @@ FROM datasets.`telco-churn`
 GROUP BY Churn;
 
 #  Income Revenue (total charges) made from customers based on their gender
-select gender, count(*) as totalcustomer, 
+SELECT gender, count(*) as totalcustomer, 
 round(sum(TotalCharges),2) as totalcharges 
 from datasets.`telco-churn` group by gender order by totalcharges desc;
 
@@ -66,14 +66,14 @@ GROUP BY SeniorCitizen
 ORDER BY ChurnRate DESC;
 
 # churn rate for customers with and without partners, and what is the overall churn rate
-Select Partner, count(*) as Totalcustomer, 
+SELECT Partner, count(*) as Totalcustomer, 
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 from datasets.`telco-churn` 
 group by Partner order by churnrate desc;
 
 # churn rate for customers at different levels of tenure
-Select distinct tenure from datasets.`telco-churn` order by tenure desc ;
+SELECT distinct tenure from datasets.`telco-churn` order by tenure desc ;
 SELECT 
 	CASE 
 		WHEN tenure <=12 THEN '0–12'
@@ -91,7 +91,7 @@ SELECT
 	ORDER BY ChurnRate DESC;
 
 # churn rate for customers with Online Security
-Select OnlineSecurity, COUNT(*) AS Totalcustomer,
+SELECT OnlineSecurity, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 FROM datasets.`telco-churn`
@@ -99,34 +99,34 @@ group by 1
 order by 4 desc;
 
 # churn rate for customers with Online Backup
-Select OnlineBackup, COUNT(*) AS Totalcustomer,
+SELECT OnlineBackup, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 FROM datasets.`telco-churn`
 group by 1 order by 4 desc;
 
 # churn rate for customers with Tech Support
-Select TechSupport, COUNT(*) AS Totalcustomer,
+SELECT TechSupport, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 FROM datasets.`telco-churn`
 group by 1 order by 4 desc;
 
 # Does churn rate vary based on the contract type, and if so, how does it vary?
-Select Contract, COUNT(*) AS Totalcustomer,
+SELECT Contract, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 FROM datasets.`telco-churn`
 group by 1 order by 4 desc;
 
 #Does Streaming TV, and Streaming Movies impact the churn rate
-Select StreamingTV, COUNT(*) AS Totalcustomer,
+SELECT StreamingTV, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 FROM datasets.`telco-churn`
 group by 1 order by 4 desc;
 
-Select StreamingMovies, COUNT(*) AS Totalcustomer,
+SELECT StreamingMovies, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 (SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100) AS ChurnRate
 FROM datasets.`telco-churn`
@@ -155,21 +155,21 @@ GROUP BY Contract ORDER BY ChurnRate DESC;
 
 # Does the Paperless Billing feature effectively attract customers?
 # Paperless billing shows a negative trend, indicating potential payment issues and customers do not particularly appreciate this feature.
-Select PaperlessBilling, COUNT(*) AS Totalcustomer,
+SELECT PaperlessBilling, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 cast(SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100 as decimal (10,2)) AS ChurnRate
 FROM datasets.`telco-churn`
 group by 1 order by 4 desc;
 
 # commonly used payment methods
-Select PaymentMethod, COUNT(*) AS Totalcustomer,
+SELECT PaymentMethod, COUNT(*) AS Totalcustomer,
 SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) AS ChurnedCustomers,
 cast(SUM(CASE WHEN Churn = 'Yes' THEN 1 ELSE 0 END) / COUNT(*) * 100 as decimal (10,2)) AS ChurnRate
 FROM datasets.`telco-churn`
 group by 1 order by 4 desc;
 
 # Where is the most revenue generated via payment method
-select PaymentMethod, count(*) as totalcustomer, 
+SELECT PaymentMethod, count(*) as totalcustomer, 
 round(sum(TotalCharges),2) as totalRevenuecharges 
 from datasets.`telco-churn` group by PaymentMethod order by totalRevenuecharges desc;
 
