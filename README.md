@@ -1,4 +1,4 @@
-##  Telecom Customer Churn SQL Project
+#  Telecom Customer Churn SQL Project
 
 ## Breakdown
 - [Project Overview](#project-overview)
